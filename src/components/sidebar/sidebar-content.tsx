@@ -9,11 +9,10 @@ import {
   ArrowRightToLine,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Logo } from '../logo';
+import { Logo } from '@/components/logo/logo';
 
 export const SidebarContent = () => {
   const router = useRouter();
-
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const collapseSidebar = () => setIsCollapsed(true);
@@ -62,6 +61,8 @@ export const SidebarContent = () => {
                   onClick={collapseSidebar}
                   variant="icon"
                   className="hidden md:inline-flex p-2 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-accent-500 rounded-lg transition-colors"
+                  title="Minimizar sidebar"
+                  aria-label="Minimizar sidebar"
                 >
                   <ArrowLeftToLine className="size-5 text-gray-100" />
                 </Button>
