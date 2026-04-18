@@ -6,8 +6,10 @@ import { render, screen } from '@/lib/test-utils';
 import userEvent from '@testing-library/user-event';
 
 const pushMock = jest.fn();
+let mockSearchParams = new URLSearchParams();
 jest.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
+  useSearchParams: () => mockSearchParams,
 }));
 
 const initialPrompts = [
@@ -108,5 +110,33 @@ describe('SidebarContent', () => {
 
       expect(pushMock).toHaveBeenCalledWith('/new');
     });
+  });
+
+  describe('Search', () => {
+    it('should navigate with coded URL when type and clear input field', async () => {
+      const text = 'A B';
+      makeSut();
+      const searchInput = screen.getByPlaceholderText('Buscar prompts...');
+
+      await user.type(searchInput, text);
+
+      expect(pushMock).toHaveBeenCalled();
+      const lastCall = pushMock.mock.calls.at(-1);
+      expect(lastCall?.[0]).toBe('/?q=A%20B');
+
+      await user.clear(searchInput);
+      const lastClearCall = pushMock.mock.calls.at(-1);
+      expect(lastClearCall?.[0]).toBe('/');
+    });
+  });
+
+  it('should init search input field with search param', () => {
+    const text = 'initial';
+    const searchParams = new URLSearchParams(`q=${text}`);
+    mockSearchParams = searchParams;
+    makeSut();
+    const searchInput = screen.getByPlaceholderText('Buscar prompts...');
+
+    expect(searchInput).toHaveValue(text);
   });
 });
