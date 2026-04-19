@@ -6,9 +6,7 @@ export class PrismaPromptRepository implements PromptRepository {
 
   async findMany(): Promise<Prompt[]> {
     const prompts = await this.prisma.prompt.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: { createdAt: 'desc' },
     });
     return prompts;
   }
@@ -25,9 +23,7 @@ export class PrismaPromptRepository implements PromptRepository {
             ],
           }
         : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: { createdAt: 'desc' },
     });
     return prompts;
   }

@@ -40,7 +40,7 @@ describe('PrismaPromptRepository', () => {
   });
 
   describe('findMany', () => {
-    it('should order by createdAt in descending and map results', async () => {
+    it('deve ordenar por createdAt desc e mapear os resultados', async () => {
       const now = new Date();
       const input = [
         {
@@ -63,16 +63,14 @@ describe('PrismaPromptRepository', () => {
       const results = await repository.findMany();
 
       expect(prisma.prompt.findMany).toHaveBeenCalledWith({
-        orderBy: {
-          createdAt: 'desc',
-        },
+        orderBy: { createdAt: 'desc' },
       });
       expect(results).toMatchObject(input);
     });
   });
 
   describe('searchMany', () => {
-    it('should search by empty term and not send WHERE clause', async () => {
+    it('deve buscar por termo vazio e não enviar o where', async () => {
       const now = new Date();
       const input = [
         {
@@ -85,19 +83,16 @@ describe('PrismaPromptRepository', () => {
       ];
       prisma.prompt.findMany.mockResolvedValue(input);
 
-      const results = await repository.searchMany('   ');
+      const results = await repository.searchMany('    ');
 
       expect(prisma.prompt.findMany).toHaveBeenCalledWith({
         where: undefined,
-        orderBy: {
-          createdAt: 'desc',
-        },
+        orderBy: { createdAt: 'desc' },
       });
-
       expect(results).toMatchObject(input);
     });
 
-    it('should search by term and populate OR in WHERE clause', async () => {
+    it('deve buscar por termo e popular OR no where', async () => {
       const now = new Date();
       const input = [
         {
@@ -110,7 +105,7 @@ describe('PrismaPromptRepository', () => {
       ];
       prisma.prompt.findMany.mockResolvedValue(input);
 
-      const results = await repository.searchMany(' title 01  ');
+      const results = await repository.searchMany('  title 01  ');
 
       expect(prisma.prompt.findMany).toHaveBeenCalledWith({
         where: {
@@ -119,11 +114,8 @@ describe('PrismaPromptRepository', () => {
             { content: { contains: 'title 01', mode: 'insensitive' } },
           ],
         },
-        orderBy: {
-          createdAt: 'desc',
-        },
+        orderBy: { createdAt: 'desc' },
       });
-
       expect(results).toMatchObject(input);
     });
   });
