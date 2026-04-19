@@ -1,6 +1,6 @@
 import {
   SidebarContent,
-  SidebarContentProps,
+  type SidebarContentProps,
 } from '@/components/sidebar/sidebar-content';
 import { render, screen } from '@/lib/test-utils';
 import userEvent from '@testing-library/user-event';

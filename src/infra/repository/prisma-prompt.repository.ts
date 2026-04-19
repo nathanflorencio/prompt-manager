@@ -1,4 +1,4 @@
-import { PromptRepository } from '@/core/domain/prompts/prompt.repository';
+import type { PromptRepository } from '@/core/domain/prompts/prompt.repository';
 import type { PrismaClient, Prompt } from '@/generated/prisma/client';
 
 export class PrismaPromptRepository implements PromptRepository {
