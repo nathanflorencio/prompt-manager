@@ -26,6 +26,10 @@ describe('Server Actions: Prompt', () => {
   });
 
   describe('createPromptAction', () => {
+    beforeEach(() => {
+      mockedCreateExecute.mockReset();
+    });
+
     it('should create prompt with success', async () => {
       mockedCreateExecute.mockResolvedValue(undefined);
       const data = {
@@ -64,6 +68,19 @@ describe('Server Actions: Prompt', () => {
 
       expect(result?.success).toBe(false);
       expect(result?.message).toBe('Este prompt já existe');
+    });
+
+    it('should return generic error when prompt creation fails', async () => {
+      mockedCreateExecute.mockRejectedValue(new Error('UNKNOWN'));
+      const data = {
+        title: 'title',
+        content: 'content',
+      };
+
+      const result = await createPromptAction(data);
+
+      expect(result?.success).toBe(false);
+      expect(result?.message).toBe('Falha ao criar o prompt');
     });
   });
 
