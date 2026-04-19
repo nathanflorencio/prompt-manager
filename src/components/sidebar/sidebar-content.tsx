@@ -11,15 +11,11 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Logo } from '@/components/logo/logo';
 import { Input } from '@/components/ui/input';
-
-type Prompt = {
-  id: string;
-  title: string;
-  content: string;
-};
+import type { PromptSummary } from '@/core/domain/prompts/prompt.entity';
+import { PromptList } from '@/components/prompts';
 
 export type SidebarContentProps = {
-  prompts: Prompt[];
+  prompts: PromptSummary[];
 };
 
 export const SidebarContent = ({ prompts }: SidebarContentProps) => {
@@ -116,9 +112,7 @@ export const SidebarContent = ({ prompts }: SidebarContentProps) => {
         </>
       )}
 
-      {prompts.map((prompt) => (
-        <p key={prompt.id}>{prompt.title}</p>
-      ))}
+      <PromptList prompts={prompts} />
     </aside>
   );
 };
