@@ -9,7 +9,13 @@ import {
 } from '@/core/application/prompts/create-prompt.dto';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { createPromptAction } from '@/app/actions/prompt.actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -63,6 +69,7 @@ export const PromptForm = () => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -80,6 +87,7 @@ export const PromptForm = () => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
