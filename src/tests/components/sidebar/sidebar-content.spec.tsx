@@ -67,6 +67,23 @@ describe('SidebarContent', () => {
     });
   });
 
+  describe('SidebarContent - Mobile', () => {
+    it('should open and close the mobile menu', async () => {
+      makeSut();
+
+      const aside = screen.getByRole('complementary');
+      expect(aside.className).toContain('-translate-x-full');
+
+      const openButton = screen.getByRole('button', { name: 'Abrir menu' });
+      await user.click(openButton);
+      expect(aside.className).toContain('translate-x-0');
+
+      const closeButton = screen.getByRole('button', { name: 'Fechar menu' });
+      await user.click(closeButton);
+      expect(aside.className).toContain('-translate-x-full');
+    });
+  });
+
   describe('Collapse / Expand', () => {
     it('should init in expanded state and show minimize button', () => {
       makeSut();
