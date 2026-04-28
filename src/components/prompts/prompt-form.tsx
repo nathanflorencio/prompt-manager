@@ -16,25 +16,37 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { createPromptAction } from '@/app/actions/prompt.actions';
+import {
+  createPromptAction,
+  updatePromptAction,
+} from '@/app/actions/prompt.actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { CopyButton } from '@/components/button-actions';
+import { Prompt } from '@/core/domain/prompts/prompt.entity';
 
-export const PromptForm = () => {
+type PromptFormProps = {
+  prompt?: Prompt | null;
+};
+
+export const PromptForm = ({ prompt }: PromptFormProps) => {
   const router = useRouter();
 
   const form = useForm<CreatePromptDTO>({
     resolver: zodResolver(createPromptSchema),
     defaultValues: {
-      title: '',
-      content: '',
+      title: prompt?.title || '',
+      content: prompt?.content || '',
     },
   });
   const content = useWatch({ control: form.control, name: 'content' });
 
+  const isEdit = !!prompt?.id;
+
   const submit = async (data: CreatePromptDTO) => {
-    const result = await createPromptAction(data);
+    const result = isEdit
+      ? await updatePromptAction({ id: prompt.id, ...data })
+      : await createPromptAction(data);
 
     if (!result?.success) {
       toast.error(result.message);
