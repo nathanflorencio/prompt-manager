@@ -1,8 +1,8 @@
 import { PrismaClient } from '@/generated/prisma/client';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { PrismaPg } from '@prisma/adapter-pg';
 
-test('Prompt deletion on UI (success)', async ({ page }) => {
+test('Prompt deletion on UI (success)', async ({ page }: { page: Page }) => {
   const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL,
   });

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@/generated/prisma/client';
-import { expect, test, type Page } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 test('Prompt updating on UI (success)', async ({ page }: { page: Page }) => {
@@ -8,12 +8,15 @@ test('Prompt updating on UI (success)', async ({ page }: { page: Page }) => {
 
   const now = Date.now();
   const originalTitle = `E2E Edit Original ${now}`;
-  const updatedTitle = `E2E Edit Updated ${now}`;
   const originalContent = 'Original Content';
+  const updatedTitle = `E2E Edit Updated ${now}`;
   const updatedContent = 'Updated Content';
 
   const created = await prisma.prompt.create({
-    data: { title: originalTitle, content: originalContent },
+    data: {
+      title: originalTitle,
+      content: originalContent,
+    },
   });
   await prisma.$disconnect();
 
