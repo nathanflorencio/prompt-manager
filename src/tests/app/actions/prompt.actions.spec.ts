@@ -4,8 +4,13 @@ import {
   searchPromptAction,
   updatePromptAction,
 } from '@/app/actions/prompt.actions';
+import { revalidatePath } from 'next/cache';
 
 jest.mock('@/lib/prisma', () => ({ prisma: {} }));
+
+jest.mock('next/cache', () => ({
+  revalidatePath: jest.fn(),
+}));
 
 const mockedSearchExecute = jest.fn();
 const mockedCreateExecute = jest.fn();
@@ -42,6 +47,7 @@ describe('Server Actions: Prompt', () => {
     mockedCreateExecute.mockReset();
     mockedUpdateExecute.mockReset();
     mockedDeleteExecute.mockReset();
+    (revalidatePath as jest.Mock).mockReset();
   });
 
   describe('createPromptAction', () => {
@@ -56,6 +62,7 @@ describe('Server Actions: Prompt', () => {
 
       expect(result?.success).toBe(true);
       expect(result?.message).toBe('Prompt criado com sucesso');
+      expect(revalidatePath).toHaveBeenCalledTimes(1);
     });
 
     it('should return validation errors when fields are empty', async () => {
@@ -108,6 +115,7 @@ describe('Server Actions: Prompt', () => {
 
       expect(result.success).toBe(true);
       expect(result.message).toBe('Prompt removido com sucesso');
+      expect(revalidatePath).toHaveBeenCalledTimes(1);
     });
 
     it('should return an error when the id is empty', async () => {
@@ -156,6 +164,7 @@ describe('Server Actions: Prompt', () => {
         success: true,
         message: 'Prompt atualizado com sucesso',
       });
+      expect(revalidatePath).toHaveBeenCalledTimes(1);
     });
 
     it('should return a validation error when fields are missing', async () => {
